@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>D'Tony Araújo | AGREGADTN</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f4f5f7;
+    color: #111;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 520px;
+    margin: auto;
+    padding: 28px 20px 40px;
+}
+
+/* CABEÇALHO */
+
+.profile {
+    text-align: center;
+    padding: 20px 10px 28px;
+}
+
+.photo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #111827, #334155);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 34px;
+    font-weight: 700;
+    border: 4px solid white;
+    box-shadow: 0 8px 25px rgba(0,0,0,.15);
+}
+
+h1 {
+    font-size: 30px;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: #555;
+    font-size: 16px;
+}
+
+.phrase {
+    margin-top: 18px;
+    font-size: 17px;
+    font-style: italic;
+    color: #16833b;
+}
+
+/* BOTÕES */
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button {
+    width: 100%;
+    border: none;
+    background: white;
+    padding: 17px 20px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    transition: .2s;
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+.button-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    color: #16833b;
+    font-size: 22px;
+}
+
+/* ABAS */
+
+.panel {
+    display: none;
+    background: white;
+    margin-top: -2px;
+    padding: 18px 20px;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+    color: #444;
+    line-height: 1.6;
+}
+
+.panel.active {
+    display: block;
+}
+
+.panel a {
+    color: #16833b;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* RODAPÉ */
+
+.footer {
+    text-align: center;
+    margin-top: 35px;
+    color: #888;
+    font-size: 13px;
+}
+
+.logo {
+    font-weight: 800;
+    color: #111;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <section class="profile">
+
+        <div class="photo">
+            D'A
+        </div>
+
+        <h1>D'Tony Araújo</h1>
+
+        <div class="subtitle">
+            Audiovisual • Comunicação • Projetos
+        </div>
+
+        <div class="phrase">
+            “Informação que aproxima.”
+        </div>
+
+    </section>
+
+
+    <section class="buttons">
+
+        <button onclick="togglePanel('sobre')">
+            <div class="button-title">
+                <span>Sobre mim</span>
+                <span class="arrow">⌄</span>
+            </div>
+        </button>
+
+        <div id="sobre" class="panel">
+            Sou D'Tony Araújo, profissional da comunicação e do audiovisual,
+            atuando na criação de conteúdos, projetos e soluções de comunicação.
+        </div>
+
+
+        <button onclick="togglePanel('contato')">
+            <div class="button-title">
+                <span>Contato</span>
+                <span class="arrow">⌄</span>
+            </div>
+        </button>
+
+        <div id="contato" class="panel">
+            <p>
+                <strong>WhatsApp</strong><br>
+                <a href="https://wa.me/5581999347490">
+                    Conversar comigo
+                </a>
+            </p>
+        </div>
+
+
+        <button onclick="togglePanel('projetos')">
+            <div class="button-title">
+                <span>Projetos</span>
+                <span class="arrow">⌄</span>
+            </div>
+        </button>
+
+        <div id="projetos" class="panel">
+            <p>
+                <strong>AGREGADTN</strong><br>
+                Informação que aproxima.
+            </p>
+
+            <br>
+
+            <p>
+                <strong>DTN MÍDIA</strong><br>
+                Audiovisual, comunicação e produção de conteúdo.
+            </p>
+
+            <br>
+
+            <p>
+                <strong>PE da Gente</strong><br>
+                Histórias, culturas, culinárias e lugares.
+            </p>
+        </div>
+
+
+        <button onclick="togglePanel('redes')">
+            <div class="button-title">
+                <span>Redes sociais</span>
+                <span class="arrow">⌄</span>
+            </div>
+        </button>
+
+        <div id="redes" class="panel">
+            <p>
+                Instagram<br>
+                <a href="#" target="_blank">
+                    @dtonyaraujo
+                </a>
+            </p>
+        </div>
+
+
+        <button onclick="togglePanel('contato2')">
+            <div class="button-title">
+                <span>Salvar meu contato</span>
+                <span class="arrow">⌄</span>
+            </div>
+        </button>
+
+        <div id="contato2" class="panel">
+            <p>
+                Em breve vamos colocar aqui um botão para a pessoa
+                adicionar seu contato diretamente à agenda do celular.
+            </p>
+        </div>
+
+    </section>
+
+
+    <footer class="footer">
+        <div class="logo">AGREGADTN</div>
+        Informação que aproxima.
+    </footer>
+
+</div>
+
+
+<script>
+
+function togglePanel(id) {
+
+    const panel = document.getElementById(id);
+
+    document.querySelectorAll('.panel').forEach(function(item) {
+
+        if (item !== panel) {
+            item.classList.remove('active');
+        }
+
+    });
+
+    panel.classList.toggle('active');
+}
+
+</script>
+
+</body>
+</html>
