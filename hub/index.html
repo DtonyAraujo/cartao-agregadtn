@@ -1,52 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>AGREGADTN HUB</title>
   <style>
-    * { box-sizing: border-box; }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(135deg,#071425,#0b3151,#0f6a7b)}
+    main{max-width:1050px;margin:auto;padding:56px 20px}
+    .marca,h2{color:#70e5ed;font-size:13px;font-weight:bold;letter-spacing:2px}
+    h1{font-size:clamp(38px,8vw,62px);margin:14px 0}
+    .subtitulo{color:#d5e8ed;font-size:18px;line-height:1.6;margin:16px 0 42px}
+    #perfis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px}
+    .perfil{padding:22px;border:1px solid #ffffff30;border-radius:18px;background:#ffffff1a}
+    .perfil h3{margin:0 0 14px;font-size:23px}
+    .modulo{display:inline-block;margin:3px;padding:6px 10px;border-radius:20px;background:#70e5ed29;color:#bafaff;font-size:12px}
+    footer{margin-top:46px;color:#a9c4ce;font-size:13px}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="marca">AGREGADTN</div>
+    <h1>HUB</h1>
+    <p class="subtitulo">Um espaço para reunir perfis e experiências digitais.</p>
+    <h2>PERFIS</h2>
+    <section id="perfis"><div class="perfil">Carregando perfis...</div></section>
+    <footer>AGREGADTN — conexões que acompanham pessoas.</footer>
+  </main>
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: white;
-      background: linear-gradient(135deg, #071425, #0b3151, #0f6a7b);
-    }
-
-    main {
-      width: min(100%, 1050px);
-      margin: auto;
-      padding: 56px 20px;
-    }
-
-    .marca {
-      color: #70e5ed;
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
-
-    h1 {
-      margin: 14px 0;
-      font-size: clamp(38px, 8vw, 62px);
-    }
-
-    .subtitulo {
-      max-width: 600px;
-      color: #d5e8ed;
-      font-size: 18px;
-      line-height: 1.6;
-      margin-bottom: 42px;
-    }
-
-    h2 {
-      color: #70e5ed;
-      font-size: 15px;
-      letter-spacing: 1px;
-    }
-
-    #perfis {
-      display: grid;
-     
+  <script>
+    const ids=["dtony","rafaela","gilvanelson","daniel","clarice"];
+    const nomes={
+      cartao:"Cartão de visita",tea:"TEA",escola:"Escola",
+      igreja:"Igreja",pet:"Pet",hotel:"Hotel",restaurante:"Restaurante",
+      ciclista:"Ciclista",corredor:"Corredor",idoso:"Idoso",turista:"Turista"
+    };
+    const area=document.getElementById("perfis");
+    Promise.all(ids.map(async id=>{
+      try{
+        const r=await fetch("../profiles/"+id+".json");
+        const p=await r.json();
+        const mods=(p.modulos||[]).map(m=>`<span class="modulo">${nomes[m]||m}</span>`).join("")||'<span class="modulo">Perfil em configuração</span>';
+        return `<article
