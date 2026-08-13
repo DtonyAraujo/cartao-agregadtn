@@ -1,1 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGREGADTN HUB</title>
+  <style>
+    * { box-sizing: border-box; }
 
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      background: linear-gradient(135deg, #071425, #0b3151, #0f6a7b);
+    }
+
+    main {
+      width: min(100%, 1050px);
+      margin: auto;
+      padding: 56px 20px;
+    }
+
+    .marca {
+      color: #70e5ed;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      margin: 14px 0;
+      font-size: clamp(38px, 8vw, 62px);
+    }
+
+    .subtitulo {
+      max-width: 600px;
+      color: #d5e8ed;
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 42px;
+    }
+
+    h2 {
+      color: #70e5ed;
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+
+    #perfis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .perfil {
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      background: rgba(255,255,255,.10);
+    }
+
+    .perfil h3 {
+      margin: 0 0 14px;
+      font-size: 23px;
+    }
+
+    .modulo {
+      display: inline-block;
+      margin: 3px;
+      padding: 6px 10px;
+      border-radius: 20px;
+      color: #bafaff;
+      font-size: 12px;
+      background: rgba(112,229,237,.16);
+    }
+
+    footer {
+      margin-top: 46px;
+      color: #a9c4ce;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="marca">AGREGADTN</div>
+    <h1>HUB</h1>
+    <p class="subtitulo">
+      Um espaço para reunir perfis e experiências digitais.
+    </p>
+
+    <h2>PERFIS</h2>
+
+    <section id="perfis">
+      <div class="perfil"><h3>D'Tony</h3><span class="modulo">Cartão de visita</span><span class="modulo">TEA</span></div>
+      <div class="perfil"><h3>Rafaela</h3><span class="modulo">Cartão de visita</span></div>
+      <div class="perfil"><h3>Gilvanelson</h3><span class="modulo">Perfil em configuração</span></div>
+      <div class="perfil"><h3>Daniel</h3><span class="modulo">Perfil em configuração</span></div>
+      <div class="perfil"><h3>Clarice</h3><span class="modulo">Perfil em configuração</span></div>
+    </section>
+
+    <footer>AGREGADTN — conexões que acompanham pessoas.</footer>
+  </main>
+</body>
+</html>
