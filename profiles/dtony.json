@@ -1,1 +1,12 @@
-
+{
+  "id": "dtony",
+  "nome": "D'Tony Araújo",
+  "tipo": "pessoa",
+  "modulos": [
+    "cartao",
+    "tea"
+  ],
+  "publico": {},
+  "privado": {},
+  "nfc": []
+}
