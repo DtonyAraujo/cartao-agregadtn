@@ -1,0 +1,11 @@
+{
+  "id": "clarice",
+  "nome": "Clarice",
+  "tipo": "crianca",
+  "modulos": [
+    "kids"
+  ],
+  "publico": {},
+  "privado": {},
+  "nfc": []
+}
