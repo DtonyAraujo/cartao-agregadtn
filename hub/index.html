@@ -33,7 +33,8 @@
     const nomes={
       cartao:"Cartão de visita",tea:"TEA",escola:"Escola",
       igreja:"Igreja",pet:"Pet",hotel:"Hotel",restaurante:"Restaurante",
-      ciclista:"Ciclista",corredor:"Corredor",idoso:"Idoso",turista:"Turista"
+      ciclista:"Ciclista",corredor:"Corredor",idoso:"Idoso",turista:"Turista",
+      kids:"Kids"
     };
     const area=document.getElementById("perfis");
     Promise.all(ids.map(async id=>{
@@ -41,4 +42,13 @@
         const r=await fetch("../profiles/"+id+".json");
         const p=await r.json();
         const mods=(p.modulos||[]).map(m=>`<span class="modulo">${nomes[m]||m}</span>`).join("")||'<span class="modulo">Perfil em configuração</span>';
-        return `<article
+        return `<article class="perfil"><h3>${p.nome||id}</h3><div>${mods}</div></article>`;
+      }catch(e){
+        return `<article class="perfil"><h3>${id}</h3><div class="modulo">Erro ao carregar</div></article>`;
+      }
+    })).then(cards=>{
+      area.innerHTML = cards.join("");
+    });
+  </script>
+</body>
+</html>
