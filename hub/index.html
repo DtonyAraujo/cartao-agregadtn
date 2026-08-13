@@ -12,10 +12,31 @@
     h1{font-size:clamp(38px,8vw,62px);margin:14px 0}
     .subtitulo{color:#d5e8ed;font-size:18px;line-height:1.6;margin:16px 0 42px}
     #perfis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px}
-    .perfil{padding:22px;border:1px solid #ffffff30;border-radius:18px;background:#ffffff1a}
+    .perfil{padding:22px;border:1px solid #ffffff30;border-radius:18px;background:#ffffff1a;display:flex;flex-direction:column}
     .perfil h3{margin:0 0 14px;font-size:23px}
     .modulo{display:inline-block;margin:3px;padding:6px 10px;border-radius:20px;background:#70e5ed29;color:#bafaff;font-size:12px}
+    .perfil-mods{flex:1}
+    .btn-editar{margin-top:16px;align-self:flex-start;padding:8px 14px;border-radius:20px;border:1px solid #70e5ed70;background:transparent;color:#70e5ed;font-size:13px;font-weight:bold;letter-spacing:1px;cursor:pointer}
+    .btn-editar:hover{background:#70e5ed29}
     footer{margin-top:46px;color:#a9c4ce;font-size:13px}
+
+    .overlay{position:fixed;inset:0;background:#050d18cc;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+    .overlay.aberto{display:flex}
+    .modal{background:#0b2c45;border:1px solid #ffffff30;border-radius:18px;padding:28px;max-width:520px;width:100%;max-height:88vh;overflow:auto}
+    .modal h2{margin:0 0 4px}
+    .modal .modal-sub{color:#a9c4ce;font-size:13px;margin-bottom:20px}
+    .campo{margin-bottom:16px}
+    .campo label{display:block;color:#bafaff;font-size:13px;font-weight:bold;letter-spacing:1px;margin-bottom:6px}
+    .campo input[type=text]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #ffffff40;background:#ffffff12;color:#fff;font-size:15px}
+    .lista-modulos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+    .lista-modulos label{display:flex;align-items:center;gap:6px;font-weight:normal;color:#d5e8ed;font-size:13px;letter-spacing:0}
+    .json-preview{width:100%;min-height:180px;padding:12px;border-radius:10px;border:1px solid #ffffff40;background:#04101d;color:#8ff0d0;font-family:monospace;font-size:12.5px;white-space:pre;overflow:auto}
+    .modal-acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .modal-acoes button,.modal-acoes a{padding:10px 16px;border-radius:20px;font-size:13px;font-weight:bold;letter-spacing:1px;cursor:pointer;text-decoration:none;text-align:center;border:1px solid #ffffff40;background:transparent;color:#fff}
+    .modal-acoes .primario{background:#70e5ed;color:#052030;border-color:#70e5ed}
+    .modal-acoes .fechar{margin-left:auto}
+    .aviso-copia{color:#8ff0d0;font-size:12px;margin-top:6px;min-height:16px}
+    .instrucoes{color:#a9c4ce;font-size:12.5px;line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid #ffffff20}
   </style>
 </head>
 <body>
@@ -28,7 +49,43 @@
     <footer>AGREGADTN — conexões que acompanham pessoas.</footer>
   </main>
 
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h2 id="modalNome">Editar perfil</h2>
+      <div class="modal-sub">Isso não salva direto no site — gera o JSON pra você colar em <code id="modalArquivo">profiles/x.json</code> no GitHub.</div>
+
+      <div class="campo">
+        <label for="campoNome">NOME</label>
+        <input type="text" id="campoNome">
+      </div>
+      <div class="campo">
+        <label for="campoTipo">TIPO</label>
+        <input type="text" id="campoTipo" placeholder="pessoa, crianca...">
+      </div>
+      <div class="campo">
+        <label>MÓDULOS</label>
+        <div class="lista-modulos" id="listaModulos"></div>
+      </div>
+      <div class="campo">
+        <label>JSON GERADO</label>
+        <div class="json-preview" id="jsonPreview"></div>
+        <div class="aviso-copia" id="avisoCopia"></div>
+      </div>
+
+      <div class="modal-acoes">
+        <button class="primario" id="btnCopiar">Copiar JSON</button>
+        <a class="secundario" id="linkGithub" href="#" target="_blank" rel="noopener">Abrir arquivo no GitHub</a>
+        <button class="fechar" id="btnFechar">Fechar</button>
+      </div>
+
+      <div class="instrucoes">
+        Depois de copiar: clique em "Abrir arquivo no GitHub", apague o conteúdo do arquivo, cole o JSON copiado e commite direto na branch <strong>main</strong>.
+      </div>
+    </div>
+  </div>
+
   <script>
+    const REPO = "DtonyAraujo/cartao-agregadtn";
     const ids=["dtony","rafaela","gilvanelson","daniel","clarice"];
     const nomes={
       cartao:"Cartão de visita",tea:"TEA",escola:"Escola",
@@ -37,17 +94,95 @@
       kids:"Kids"
     };
     const area=document.getElementById("perfis");
+    const perfisData={};
+
     Promise.all(ids.map(async id=>{
       try{
         const r=await fetch("../profiles/"+id+".json");
         const p=await r.json();
+        perfisData[id]=p;
         const mods=(p.modulos||[]).map(m=>`<span class="modulo">${nomes[m]||m}</span>`).join("")||'<span class="modulo">Perfil em configuração</span>';
-        return `<article class="perfil"><h3>${p.nome||id}</h3><div>${mods}</div></article>`;
+        return `<article class="perfil" data-id="${id}"><h3>${p.nome||id}</h3><div class="perfil-mods">${mods}</div><button class="btn-editar" data-id="${id}">EDITAR</button></article>`;
       }catch(e){
-        return `<article class="perfil"><h3>${id}</h3><div class="modulo">Erro ao carregar</div></article>`;
+        perfisData[id]={id,nome:id,tipo:"pessoa",modulos:[],publico:{},privado:{},nfc:[]};
+        return `<article class="perfil" data-id="${id}"><h3>${id}</h3><div class="perfil-mods"><span class="modulo">Erro ao carregar</span></div><button class="btn-editar" data-id="${id}">EDITAR</button></article>`;
       }
     })).then(cards=>{
       area.innerHTML = cards.join("");
+      area.querySelectorAll(".btn-editar").forEach(btn=>{
+        btn.addEventListener("click", ()=>abrirModal(btn.dataset.id));
+      });
+    });
+
+    const overlay=document.getElementById("overlay");
+    const campoNome=document.getElementById("campoNome");
+    const campoTipo=document.getElementById("campoTipo");
+    const listaModulos=document.getElementById("listaModulos");
+    const jsonPreview=document.getElementById("jsonPreview");
+    const modalNome=document.getElementById("modalNome");
+    const modalArquivo=document.getElementById("modalArquivo");
+    const linkGithub=document.getElementById("linkGithub");
+    const avisoCopia=document.getElementById("avisoCopia");
+
+    let idAtual=null;
+
+    function montarListaModulos(selecionados){
+      listaModulos.innerHTML = Object.keys(nomes).map(chave=>{
+        const marcado = selecionados.includes(chave) ? "checked" : "";
+        return `<label><input type="checkbox" value="${chave}" ${marcado}> ${nomes[chave]}</label>`;
+      }).join("");
+      listaModulos.querySelectorAll("input[type=checkbox]").forEach(cb=>{
+        cb.addEventListener("change", atualizarJson);
+      });
+    }
+
+    function atualizarJson(){
+      const perfilOriginal = perfisData[idAtual] || {};
+      const modulosSelecionados = Array.from(listaModulos.querySelectorAll("input:checked")).map(cb=>cb.value);
+      const novoPerfil = {
+        id: idAtual,
+        nome: campoNome.value,
+        tipo: campoTipo.value,
+        modulos: modulosSelecionados,
+        publico: perfilOriginal.publico || {},
+        privado: perfilOriginal.privado || {},
+        nfc: perfilOriginal.nfc || []
+      };
+      jsonPreview.textContent = JSON.stringify(novoPerfil, null, 2);
+    }
+
+    function abrirModal(id){
+      idAtual = id;
+      const p = perfisData[id] || {id,nome:id,tipo:"",modulos:[]};
+      modalNome.textContent = "Editar " + (p.nome || id);
+      modalArquivo.textContent = "profiles/" + id + ".json";
+      linkGithub.href = `https://github.com/${REPO}/edit/main/profiles/${id}.json`;
+      campoNome.value = p.nome || "";
+      campoTipo.value = p.tipo || "";
+      montarListaModulos(p.modulos || []);
+      avisoCopia.textContent = "";
+      atualizarJson();
+      overlay.classList.add("aberto");
+    }
+
+    function fecharModal(){
+      overlay.classList.remove("aberto");
+      idAtual = null;
+    }
+
+    campoNome.addEventListener("input", atualizarJson);
+    campoTipo.addEventListener("input", atualizarJson);
+    document.getElementById("btnFechar").addEventListener("click", fecharModal);
+    overlay.addEventListener("click", (e)=>{ if(e.target===overlay) fecharModal(); });
+    document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") fecharModal(); });
+
+    document.getElementById("btnCopiar").addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(jsonPreview.textContent);
+        avisoCopia.textContent = "Copiado! Agora cole no GitHub.";
+      }catch(e){
+        avisoCopia.textContent = "Não deu pra copiar automaticamente — selecione o texto acima manualmente.";
+      }
     });
   </script>
 </body>
