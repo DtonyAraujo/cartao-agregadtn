@@ -1,0 +1,11 @@
+{
+  "id": "rafaela",
+  "nome": "Rafaela",
+  "tipo": "pessoa",
+  "modulos": [
+    "cartao"
+  ],
+  "publico": {},
+  "privado": {},
+  "nfc": []
+}
